@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import student.management7.StudentManagement7.controller.converter.StudentConverter;
@@ -12,7 +14,7 @@ import student.management7.StudentManagement7.data.StudentsCourses;
 import student.management7.StudentManagement7.service.StudentService;
 import student.management7.StudentManagement7.domain.StudentDetail;
 
-@RestController
+@Controller
 public class StudentController {
 
   @Autowired
@@ -26,11 +28,14 @@ public class StudentController {
   };
 
   @GetMapping("/studentList")
-  public List<StudentDetail> searchStudentList(){
+//  public List<StudentDetail> searchStudentList(){
+  public String getStudentList(Model model){
     List<Student> students = service.searchStudent();
     List<StudentsCourses> studentsCourses =service.searchStudentsCourse();
 
-    return converter.convertStudentDetails(students, studentsCourses);
+//    return converter.convertStudentDetails(students, studentsCourses);
+    model.addAttribute("studentList", converter.convertStudentDetails(students,studentsCourses));
+    return "studentList";
   }
 
   @GetMapping("/studentsCourseList")
