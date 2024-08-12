@@ -1,11 +1,11 @@
-package student.management7.StudentManagement7.service;
+package student.management7.StudentManagement7.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import student.management7.StudentManagement7.data.Student;
-import student.management7.StudentManagement7.data.StudentsCourses;
+import student.management7.StudentManagement7.data.StudentCourse;
 import student.management7.StudentManagement7.repository.StudentRepository;
 
 @Service
@@ -18,14 +18,6 @@ public class StudentService {
     this.repository = repository;
   }
 
-  public List<Student> searchStudent() {
-    return repository.search();
-   }
-
-  public List<StudentsCourses> searchStudentsCourse() {
-  return repository.searchStudentsCourse();
-   }
-
   public List<Student> searchStudentsIn30s() {
     List<Student> students = repository.search();
     return students.stream()
@@ -33,8 +25,8 @@ public class StudentService {
         .collect(Collectors.toList());
   }
 
-  public List<StudentsCourses> searchJavaCourses() {
-    List<StudentsCourses> studentCourses = repository.searchStudentsCourse();
+  public List<StudentCourse> searchJavaCourses() {
+    List<StudentCourse> studentCourses = repository.searchStudentsCourse();
     return studentCourses.stream()
         .filter(course -> "JAVA".equalsIgnoreCase(course.getCoursename()))
         .collect(Collectors.toList());
