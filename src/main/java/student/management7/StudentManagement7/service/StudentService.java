@@ -27,7 +27,7 @@ public class StudentService {
   public List<StudentsCourses> searchStudentsCourse() {
   return repository.searchStudentsCourse();
    }
-
+/*
   public List<Student> searchStudentsIn30s() {
     List<Student> students = repository.search();
     return students.stream()
@@ -41,7 +41,7 @@ public class StudentService {
         .filter(course -> "JAVA".equalsIgnoreCase(course.getCoursename()))
         .collect(Collectors.toList());
   }
-
+*/
   @Transactional
   public void registerStudent(StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
