@@ -41,17 +41,7 @@ public class StudentController {
   public List<StudentsCourses> searchStudentsCourseList(){
     return service.searchStudentsCourse();
   }
-/*
-  @GetMapping("/studentsIn30s")
-  public List<Student> searchStudentsIn30s() {
-    return service.searchStudentsIn30s();
-  }
 
-  @GetMapping("/javaCourses")
-    return service.searchJavaCourses();
-  }
-  public List<StudentsCourses> searchJavaCourses() {
-*/
   @GetMapping("/newStudent")
   public String newStudent(Model model){
     StudentDetail studentDetail = new StudentDetail();
