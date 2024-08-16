@@ -19,19 +19,19 @@ import student.management7.StudentManagement7.domain.StudentDetail;
 public class StudentController {
 
   @Autowired
-  private StudentService service;
+  private student.management7.StudentManagement7.service.StudentService service;
   private StudentConverter converter;
 
   @Autowired
-  public StudentController(StudentService service, StudentConverter converter){
+  public StudentController(student.management7.StudentManagement7.service.StudentService service, StudentConverter converter){
     this.service = service;
     this.converter = converter;
   };
 
   @GetMapping("/studentList")
   public String getStudentList(Model model){
-    List<Student> students = service.searchStudent();
-    List<StudentsCourses> studentsCourses =service.searchStudentsCourse();
+    List<Student> students = service.getStudentList();
+    List<StudentsCourses> studentsCourses =service.getStudentsCourseList();
 
     model.addAttribute("studentList", converter.convertStudentDetails(students,studentsCourses));
     return "studentList";
@@ -39,7 +39,7 @@ public class StudentController {
 
   @GetMapping("/studentsCourseList")
   public List<StudentsCourses> searchStudentsCourseList(){
-    return service.searchStudentsCourse();
+    return service.getStudentsCourseList();
   }
 
   @GetMapping("/newStudent")
