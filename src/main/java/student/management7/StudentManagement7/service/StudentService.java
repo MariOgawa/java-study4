@@ -27,21 +27,7 @@ public class StudentService {
   public List<StudentsCourses> searchStudentsCourse() {
   return repository.searchStudentsCourse();
    }
-/*
-  public List<Student> searchStudentsIn30s() {
-    List<Student> students = repository.search();
-    return students.stream()
-        .filter(student -> student.getAge() >= 30 && student.getAge() <= 39)
-        .collect(Collectors.toList());
-  }
 
-  public List<StudentsCourses> searchJavaCourses() {
-    List<StudentsCourses> studentCourses = repository.searchStudentsCourse();
-    return studentCourses.stream()
-        .filter(course -> "JAVA".equalsIgnoreCase(course.getCoursename()))
-        .collect(Collectors.toList());
-  }
-*/
   @Transactional
   public void registerStudent(StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
