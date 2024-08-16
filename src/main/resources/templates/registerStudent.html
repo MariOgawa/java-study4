@@ -11,32 +11,36 @@
     <input type="text" id="name" th:field="*{student.name}" required/>
   </div>
   <div>
-    <label for="name">カナ名</label>
+    <label for="kanaName">カナ名</label>
     <input type="text" id="kanaName" th:field="*{student.kanaName}" required/>
   </div>
   <div>
-    <label for="name">ニックネーム</label>
+    <label for="nickname">ニックネーム</label>
     <input type="text" id="nickname" th:field="*{student.nickname}" required/>
   </div>
   <div>
-    <label for="name">メールアドレス</label>
+    <label for="email">メールアドレス</label>
     <input type="text" id="email" th:field="*{student.email}" required/>
   </div>
   <div>
-    <label for="name">地域</label>
+    <label for="area">地域</label>
     <input type="text" id="area" th:field="*{student.area}" />
   </div>
   <div>
-    <label for="name">年齢</label>
+    <label for="age">年齢</label>
     <input type="text" id="age" th:field="*{student.age}" />
   </div>
   <div>
-    <label for="name">性別</label>
+    <label for="sex">性別</label>
     <input type="text" id="sex" th:field="*{student.sex}" />
   </div>
   <div>
-    <label for="name">備考</label>
+    <label for="remark">備考</label>
     <input type="text" id="remark" th:field="*{student.remark}" />
+  </div>
+  <div th:each="course, stat : *{studentsCourses}">
+    <label for="courseName" th:for="*{studentsCourses[__${stat.index}__].courseName}">受講コース名</label>
+    <input type="text" id= "courseName" th:id="*{studentsCourses[__${stat.index}__].courseName}" th:field="*{studentsCourses[__${stat.index}__].courseName}" />
   </div>
   <div>
     <button type="submit">登録</button>
