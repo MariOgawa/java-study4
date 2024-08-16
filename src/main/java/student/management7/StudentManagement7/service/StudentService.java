@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentsCourses;
+import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.repository.StudentRepository;
 
 @Service
@@ -38,5 +40,11 @@ public class StudentService {
     return studentCourses.stream()
         .filter(course -> "JAVA".equalsIgnoreCase(course.getCoursename()))
         .collect(Collectors.toList());
+  }
+
+  @Transactional
+  public void registerStudent(StudentDetail studentDetail){
+    repository.registerStudent(studentDetail.getStudent());
+    //TODO:コース情報登録も行う。
   }
 }

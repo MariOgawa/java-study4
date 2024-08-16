@@ -1,7 +1,9 @@
 package student.management7.StudentManagement7.repository;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentsCourses;
@@ -24,4 +26,9 @@ public interface StudentRepository {
 
     @Select("SELECT * FROM students_courses")
     List<StudentsCourses> searchStudentsCourse();
+
+    @Insert("INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted) "
+        + "VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void registerStudent(Student student);
 }
