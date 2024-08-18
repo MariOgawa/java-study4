@@ -1,11 +1,15 @@
-package student.management7.StudentManagement7.Service;
+package student.management7.StudentManagement7.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import student.management7.StudentManagement7.data.Student;
-import student.management7.StudentManagement7.data.StudentCourse;
+import student.management7.StudentManagement7.data.StudentsCourses;
+import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.repository.StudentRepository;
 
 @Service
@@ -17,7 +21,7 @@ public class StudentService {
   public StudentService(StudentRepository repository) {
     this.repository = repository;
   }
-
+/*
   public List<Student> searchStudentsIn30s() {
     List<Student> students = repository.search();
     return students.stream()
@@ -31,4 +35,30 @@ public class StudentService {
         .filter(course -> "JAVA".equalsIgnoreCase(course.getCoursename()))
         .collect(Collectors.toList());
   }
+*/
+  public List<Student> getStudentList() {
+    List<Student> students = repository.search();
+    return repository.search();
+  }
+
+  public List<StudentsCourses> getStudentsCourseList() {
+    List<StudentsCourses> studentCourses = repository.searchStudentsCourse();
+    return repository.searchStudentsCourse();
+  }
+
+  @Transactional
+  public void registerStudent(StudentDetail studentDetail){
+    repository.registerStudent(studentDetail.getStudent());
+    //コース情報登録
+
+    for (StudentsCourses studentsCourse :studentDetail.getStudentsCourses()){
+      studentsCourse.setStudentId(studentDetail.getStudent().getId());
+      studentsCourse.setCourseStartAt(Timestamp.valueOf(LocalDateTime.now()));
+      studentsCourse.setCourseEndAt(Timestamp.valueOf(LocalDateTime.now().plusYears(1)));
+      repository.registerStudentsCourses(studentsCourse);
+    }
+
+  }
+
 }
+
