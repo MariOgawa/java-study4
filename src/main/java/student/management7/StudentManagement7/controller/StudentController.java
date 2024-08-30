@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import student.management7.StudentManagement7.controller.converter.StudentConverter;
 import student.management7.StudentManagement7.data.Student;
@@ -30,16 +31,24 @@ public class StudentController {
 
   @GetMapping("/studentList")
   public String getStudentList(Model model){
-    List<Student> students = service.getStudentList();
-    List<StudentsCourses> studentsCourses =service.getStudentsCourseList();
+    List<Student> students = service.searchStudentList();
+    List<StudentsCourses> studentsCourses =service.searchStudentsCourseList();
 
     model.addAttribute("studentList", converter.convertStudentDetails(students,studentsCourses));
     return "studentList";
   }
 
+
+  @GetMapping("/student/{id}")
+  public String getStudent(@PathVariable String id, Model model){
+    StudentDetail studentDetail = service.searchStudent(id);
+    model.addAttribute("studentDetail", studentDetail);
+    return "updateStudent";
+  }
+
   @GetMapping("/studentsCourseList")
   public List<StudentsCourses> searchStudentsCourseList(){
-    return service.getStudentsCourseList();
+    return service.searchStudentsCourseList();
   }
 
   @GetMapping("/newStudent")
@@ -57,6 +66,15 @@ public class StudentController {
     }
     // サービスを利用してデータベースに登録
     service.registerStudent(studentDetail);
+    return "redirect:/studentList";
+  }
+
+  @PostMapping("/updateStudent")
+  public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result){
+    if(result.hasErrors()){
+      return "updateStudent";
+    }
+    service.updateStudent(studentDetail);
     return "redirect:/studentList";
   }
 }
