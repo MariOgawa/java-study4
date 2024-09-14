@@ -20,21 +20,7 @@ public class StudentService {
   public StudentService(StudentRepository repository) {
     this.repository = repository;
   }
-/*
-  public List<Student> searchStudentsIn30s() {
-    List<Student> students = repository.search();
-    return students.stream()
-        .filter(student -> student.getAge() >= 30 && student.getAge() <= 39)
-        .collect(Collectors.toList());
-  }
 
-  public List<StudentCourse> searchJavaCourses() {
-    List<StudentCourse> studentCourses = repository.searchStudentsCourse();
-    return studentCourses.stream()
-        .filter(course -> "JAVA".equalsIgnoreCase(course.getCoursename()))
-        .collect(Collectors.toList());
-  }
-*/
   public List<Student> searchStudentList() {
     List<Student> students = repository.search();
     return repository.search();
@@ -55,7 +41,8 @@ public class StudentService {
   }
 
   @Transactional
-  public void registerStudent(StudentDetail studentDetail){
+  //public void registerStudent(StudentDetail studentDetail){
+  public StudentDetail registerStudent(StudentDetail studentDetail){
     repository.registerStudent(studentDetail.getStudent());
     //コース情報登録
 
@@ -65,6 +52,7 @@ public class StudentService {
       studentsCourse.setCourseEndAt(Timestamp.valueOf(LocalDateTime.now().plusYears(1)));
       repository.registerStudentsCourses(studentsCourse);
     }
+    return studentDetail;
   }
 
   @Transactional
