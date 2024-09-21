@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import student.management7.StudentManagement7.data.Student;
-import student.management7.StudentManagement7.data.StudentsCourses;
+import student.management7.StudentManagement7.data.StudentCourse;
 
 @Getter
 @Setter
@@ -15,6 +15,6 @@ import student.management7.StudentManagement7.data.StudentsCourses;
 public class StudentDetail {
 
   private Student student;
-  private List<StudentsCourses> studentsCourses;
+  private List<StudentCourse> studentCourseList;
 }
 
