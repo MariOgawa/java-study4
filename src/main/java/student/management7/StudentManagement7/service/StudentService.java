@@ -62,12 +62,15 @@ public class StudentService {
   @Transactional
   public StudentDetail registerStudent(StudentDetail studentDetail){
     Student student = studentDetail.getStudent();
+    System.out.println("Registering student: " + student);
 
     repository.registerStudent(student);
-    for (StudentCourse studentCourse :studentDetail.getStudentCourseList()){
-      initStudentsCourses(studentCourse, student);
+    studentDetail.getStudentCourseList().forEach(studentCourse -> {
+      initStudentsCourse(studentCourse, student);
+      System.out.println("Registering student course: " + studentCourse);
+
       repository.registerStudentCourse(studentCourse);
-    }
+    });
     return studentDetail;
   }
 
@@ -77,7 +80,7 @@ public class StudentService {
    * @param studentCourse 受講生コース情報
    * @param student 受講生
    */
-  private void initStudentsCourses(StudentCourse studentCourse, Student student) {
+  private void initStudentsCourse(StudentCourse studentCourse, Student student) {
     LocalDateTime now = LocalDateTime.now();
 
     studentCourse.setStudentId(student.getId());
