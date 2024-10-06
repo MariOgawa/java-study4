@@ -19,8 +19,8 @@ import student.management7.StudentManagement7.repository.StudentRepository;
 @Service
 public class StudentService {
 
-    private StudentRepository repository;
-    private StudentConverter converter;
+  private StudentRepository repository;
+  private StudentConverter converter;
 
   @Autowired
   public StudentService(StudentRepository repository, StudentConverter converter) {
