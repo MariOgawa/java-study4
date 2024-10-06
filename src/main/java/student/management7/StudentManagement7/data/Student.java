@@ -1,5 +1,6 @@
 package student.management7.StudentManagement7.data;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.constraints.NotBlank;
@@ -7,7 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class Student {
-//  @NotBlank
+
+  @Pattern(regexp = "^\\d+$")
   private String id;
   @NotBlank
   private String name;
