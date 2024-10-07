@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.validation.BindingResult;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,10 +55,12 @@ public class StudentController {
    */
   @Operation(summary = "一覧検索", description = "受講生の一覧を検索します。")
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() {
-    //  public List<StudentDetail> getStudentList() throws TestException {
-    //    throw new TestException("現在このAPIは利用できません。URLは「studentsList」ではなく「students」を利用してください。");
-    return service.searchStudentList();
+
+  public List<StudentDetail> getStudentList() throws TestException {
+    throw new TestException("現在このAPIは利用できません。URLは「studentsList」ではなく「students」を利用してください。");
+
+  //  return service.searchStudentList();
+
   }
 
   /**
