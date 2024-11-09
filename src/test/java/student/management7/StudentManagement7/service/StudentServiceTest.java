@@ -81,8 +81,9 @@ class StudentServiceTest {
   @Test
   void 受講生詳細の登録_受講生とコース情報が正しく登録されること() {
     // 事前準備
+    String id = "999";
     Student student = new Student();
-    student.setId("56");
+    student.setId(id);
 
     StudentCourse course1 = new StudentCourse();
 
@@ -100,7 +101,7 @@ class StudentServiceTest {
     verify(repository, times(1)).registerStudentCourse(course1);  // 各コースが正しく登録されるか
 
     // コース情報の初期化が行われたかどうかを確認
-    assertEquals(student.getId(), course1.getStudentId());
+    assertEquals(id, course1.getStudentId());
 
     assertNotNull(course1.getCourseStartAt());  // コース開始日が設定されているか
     assertNotNull(course1.getCourseEndAt());    // コース終了日が設定されているか
