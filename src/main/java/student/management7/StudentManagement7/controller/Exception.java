@@ -14,7 +14,7 @@ import student.management7.StudentManagement7.service.StudentService;
 
 @Validated
 @RestController
-public class Exception {
+public class Exception extends Throwable {
   private final StudentService service;
   @Autowired
   public Exception(StudentService service) {
