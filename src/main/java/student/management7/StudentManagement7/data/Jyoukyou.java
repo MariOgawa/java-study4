@@ -6,16 +6,15 @@ import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 
-@Schema(description = "受講生コース情報")
+@Schema(description = "申込状況")
 @Getter
 @Setter
-public class StudentCourse {
+public class Jyoukyou {
   @Pattern(regexp = "^\\d+$")
   private int id;
   @Pattern(regexp = "^\\d+$")
-  private int studentId;
-  private String courseName;
-  private Timestamp courseStartAt;
-  private Timestamp courseEndAt;
+  private int courseId;
+  private String jyoukyou;
+
 }
 
