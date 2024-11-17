@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 public class Student {
 
   @Pattern(regexp = "^\\d+$")
-  private String id;
+  private int id;
   @NotBlank
   private String name;
   @NotBlank

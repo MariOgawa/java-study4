@@ -43,7 +43,7 @@ class StudentControllerTest {
   @Test
   void 受講生詳細の検索が実行できて空のリストが返ってくること()
       throws Exception, java.lang.Exception {
-    String id = "999";
+    int id = 999;
     mockMvc.perform(MockMvcRequestBuilders.get("/student/{id}", id))
         .andExpect(status().isOk());
 
@@ -118,7 +118,7 @@ class StudentControllerTest {
   @Test
   void 受講生詳細の受講生でIDに適切な値を入力した時に入力チェックに異常が発生しないこと(){
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     student.setName("田中");
     student.setKanaName("タナカタロウ");
     student.setNickname("タナカ");
@@ -134,7 +134,7 @@ class StudentControllerTest {
   @Test
   void 受講生詳細の受講生でIDに数字以外を用いたときに入力チェックにかかること(){
     Student student = new Student();
-    student.setId("テストです。");
+    student.setId(1);
     student.setName("田中");
     student.setKanaName("タナカタロウ");
     student.setNickname("タナカ");

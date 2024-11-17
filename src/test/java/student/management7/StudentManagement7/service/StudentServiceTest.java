@@ -59,7 +59,7 @@ class StudentServiceTest {
   @Test
   void 受講生詳細の検索_リポジトリとコンバーターの処理が適切に呼び出せていること() {
     // 事前準備
-    String studentId = "55";
+    int studentId = 55;
     Student student = new Student();
     student.setId(studentId);
 
@@ -81,7 +81,7 @@ class StudentServiceTest {
   @Test
   void 受講生詳細の登録_受講生とコース情報が正しく登録されること() {
     // 事前準備
-    String id = "999";
+    int id = 999;
     Student student = new Student();
     student.setId(id);
 
@@ -111,7 +111,7 @@ class StudentServiceTest {
   void 受講生詳細の更新_受講生とコース情報が正しく更新されること() {
     // 事前準備
     Student student = new Student();
-    student.setId("55");
+    student.setId(55);
 
     StudentCourse course1 = new StudentCourse();
 
