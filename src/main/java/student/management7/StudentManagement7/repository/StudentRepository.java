@@ -2,6 +2,7 @@ package student.management7.StudentManagement7.repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import student.management7.StudentManagement7.data.Jyoukyou;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
 
@@ -24,7 +25,7 @@ public interface StudentRepository {
      * @param id 受講生ID
      * @return 受講生
      */
-    Student searchStudent(String id);
+    Student searchStudent(int id);
 
     /**
      * 受講生のコース情報の全件検索を行います。
@@ -33,13 +34,18 @@ public interface StudentRepository {
      */
     List<StudentCourse> searchStudentCourseList();
 
+    /** * 全ての申込状況を検索します。
+     * *
+     * * @return 申込状況一覧 */
+    List<Jyoukyou> searchAllJyoukyou();
+
     /**
      * 受講生IDに紐づく受講生コース情報を検索します。
      *
      * @param studentId 受講生ID
      * @return 受講生IDに紐づく受講生コース情報
      */
-    List<StudentCourse> searchStudentsCourses(String studentId);
+    List<StudentCourse> searchStudentsCourses(int studentId);
 
     /**
      * 受講生を新規登録します。IDに関しては自動採番を行う。
@@ -70,4 +76,31 @@ public interface StudentRepository {
      * @param studentCourse 受講生コース情報
      */
     void updateStudentCourse(StudentCourse studentCourse);
+
+
+
+
+    /**
+     * 申込状況をコースIDで検索します。
+     *
+     * @param courseId コースID
+     * @return 申込状況
+     */
+    Jyoukyou searchJyoukyouByCourseId(int courseId);
+
+
+    /**
+     * 新規申込状況を登録します。
+     *
+     * @param jyoukyou 申込状況
+     */
+    void registerJyoukyou(Jyoukyou jyoukyou);
+
+    /**
+     * 申込状況を更新します。
+     *
+     * @param jyoukyou 申込状況
+     */
+    void updateJyoukyou(Jyoukyou jyoukyou);
+
 }

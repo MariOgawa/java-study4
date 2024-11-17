@@ -23,7 +23,7 @@ class StudentConverterTest {
   void make_list(){
 //    void 受講生のリストと受講生コース情報のリストを渡して受講生詳細のリストが作成できること}(){
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     student.setName("田中　太郎");
     student.setKanaName("タナカ　タロウ");
     student.setNickname("たーくん");
@@ -35,8 +35,8 @@ class StudentConverterTest {
     student.setDeleted(false);
 
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setId("1");
-    studentCourse.setStudentId("1");
+    studentCourse.setId(1);
+    studentCourse.setStudentId(1);
     studentCourse.setCourseName("JAVA");
 
 

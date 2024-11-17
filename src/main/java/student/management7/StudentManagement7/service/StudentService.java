@@ -3,19 +3,19 @@ package student.management7.StudentManagement7.service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import student.management7.StudentManagement7.controller.converter.StudentConverter;
+import student.management7.StudentManagement7.data.Jyoukyou;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
 import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.repository.StudentRepository;
 
-/**
- * 受講生情報を取り扱うサービスです。
- *受講生の検索や登録・更新処理を行います。
- */
 @Service
 public class StudentService {
 
@@ -28,76 +28,70 @@ public class StudentService {
     this.converter = converter;
   }
 
-  /**
-   * 受講生一覧検索です。全件検索を行うので、条件検索は行いません。
-   *
-   * @return 受講生一覧(全件)
-   */
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-    return converter.convertStudentDetails(studentList, studentCourseList);
+    List<Jyoukyou> jyoukyouList = repository.searchAllJyoukyou();
+
+    Map<Integer, Jyoukyou> jyoukyouMap = jyoukyouList.stream()
+        .collect(Collectors.toMap(Jyoukyou::getCourseId, Function.identity()));
+
+    List<StudentDetail> studentDetails = studentList.stream().map(student -> {
+      List<StudentCourse> courses = studentCourseList.stream()
+          .filter(course -> course.getStudentId() == student.getId())
+          .collect(Collectors.toList());
+
+      List<Jyoukyou> jyoukyouForStudent = courses.stream()
+          .map(course -> jyoukyouMap.get(course.getId()))
+          .collect(Collectors.toList());
+
+      return new StudentDetail(student, courses, jyoukyouForStudent);
+    }).collect(Collectors.toList());
+
+    return studentDetails;
   }
 
-  /**
-   * 受講生検索です。
-   * IDに紐づく受講生情報を取得したあと、その受講生に紐づく受講生コース情報を取得して設定します。
-   *
-   * @param id 受講生ID
-   * @return 受講生
-   */
-  public StudentDetail searchStudent(String id) {
+  public StudentDetail searchStudent(int id) {
     Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourse = repository.searchStudentsCourses(student.getId());
-    return new StudentDetail(student, studentCourse);
+    List<StudentCourse> studentCourse = repository.searchStudentsCourses(id);
+    List<Jyoukyou> jyoukyouList = studentCourse.stream()
+        .map(course -> repository.searchJyoukyouByCourseId(course.getId()))
+        .collect(Collectors.toList());
+    return new StudentDetail(student, studentCourse, jyoukyouList);
   }
 
-  /**
-   * 受講生詳細の登録を行います。
-   * 受講生と受講生コース情報を個別に登録し、受講生コース情報には受講生情報を紐づける値とコース開始日、コース終了日を設定します。
-   *
-   * @param studentDetail 受講生詳細
-   * @return 登録情報を付与した受講生詳細
-   */
   @Transactional
-  public StudentDetail registerStudent(StudentDetail studentDetail){
+  public StudentDetail registerStudent(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
-//    System.out.println("Registering student: " + student);
-
     repository.registerStudent(student);
     studentDetail.getStudentCourseList().forEach(studentCourse -> {
       initStudentsCourse(studentCourse, student.getId());
-//      System.out.println("Registering student course: " + studentCourse);
-
       repository.registerStudentCourse(studentCourse);
     });
     return studentDetail;
   }
 
-  /**
-   * 受講生コース情報を登録する際の初期情報を設定する。
-   *
-   * @param studentCourse 受講生コース情報
-   * @param id 受講生
-   */
-  private void initStudentsCourse(StudentCourse studentCourse, String id) {
+  private void initStudentsCourse(StudentCourse studentCourse, int id) {
     LocalDateTime now = LocalDateTime.now();
-
     studentCourse.setStudentId(id);
     studentCourse.setCourseStartAt(Timestamp.valueOf(now));
     studentCourse.setCourseEndAt(Timestamp.valueOf(now.plusYears(1)));
   }
 
-  /**
-   * 受講生詳細の更新を行います。受講生と受講生コース情報をそれぞれ更新します。
-   *
-   * @param studentDetail 受講生詳細
-   */
   @Transactional
-  public void updateStudent(StudentDetail studentDetail){
+  public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    studentDetail.getStudentCourseList()
-        .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
+    studentDetail.getStudentCourseList().forEach(repository::updateStudentCourse);
+  }
+
+  @Transactional
+  public Jyoukyou registerJyoukyou(Jyoukyou jyoukyou) {
+    repository.registerJyoukyou(jyoukyou);
+    return jyoukyou;
+  }
+
+  @Transactional
+  public void updateJyoukyou(Jyoukyou jyoukyou) {
+    repository.updateJyoukyou(jyoukyou);
   }
 }
-
