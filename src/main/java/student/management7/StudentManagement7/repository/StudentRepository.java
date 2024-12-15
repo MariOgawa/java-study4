@@ -19,6 +19,7 @@ public interface StudentRepository {
      */
     List<Student> search();
 
+    //追加↓
     /**
      * 受講生の検索を行います。
      *
@@ -26,6 +27,11 @@ public interface StudentRepository {
      * @return 受講生
      */
     Student searchStudent(int id);
+    //追加↑
+
+    /** * 受講生コース情報の全件検索を行います。 * * @return 受講生コース情報(全件) */
+    List<StudentCourse> searchStudentsCourse();
+
 
     /**
      * 受講生のコース情報の全件検索を行います。
@@ -86,7 +92,7 @@ public interface StudentRepository {
      * @param courseId コースID
      * @return 申込状況
      */
-    Jyoukyou searchJyoukyouByCourseId(int courseId);
+//    Jyoukyou searchJyoukyouByCourseId(int courseId);
 
 
     /**
@@ -94,13 +100,13 @@ public interface StudentRepository {
      *
      * @param jyoukyou 申込状況
      */
-    void registerJyoukyou(Jyoukyou jyoukyou);
+//    void registerJyoukyou(Jyoukyou jyoukyou);
 
     /**
      * 申込状況を更新します。
      *
      * @param jyoukyou 申込状況
      */
-    void updateJyoukyou(Jyoukyou jyoukyou);
+//    void updateJyoukyou(Jyoukyou jyoukyou);
 
 }

@@ -113,12 +113,12 @@ public class StudentController {
    * @param jyoukyou 申込状況
    * @return 実行結果
    */
-  @Operation(summary = "申込状況登録", description = "申込状況を登録します。")
-  @PostMapping("/registerJyoukyou")
-  public ResponseEntity<Jyoukyou> registerJyoukyou(@RequestBody @Valid Jyoukyou jyoukyou) {
-    Jyoukyou responseJyoukyou = service.registerJyoukyou(jyoukyou);
-    return ResponseEntity.ok(responseJyoukyou);
-  }
+//  @Operation(summary = "申込状況登録", description = "申込状況を登録します。")
+//  @PostMapping("/registerJyoukyou")
+//  public ResponseEntity<Jyoukyou> registerJyoukyou(@RequestBody @Valid Jyoukyou jyoukyou) {
+//    Jyoukyou responseJyoukyou = service.registerJyoukyou(jyoukyou);
+//    return ResponseEntity.ok(responseJyoukyou);
+//  }
 
   /**
    * 申込状況の更新を行います。
@@ -126,10 +126,10 @@ public class StudentController {
    * @param jyoukyou 申込状況
    * @return 実行結果
    */
-  @Operation(summary = "申込状況更新", description = "申込状況を更新します。")
-  @PutMapping("/updateJyoukyou")
-  public ResponseEntity<String> updateJyoukyou(@RequestBody Jyoukyou jyoukyou) {
-    service.updateJyoukyou(jyoukyou);
-    return ResponseEntity.ok("更新処理が成功しました。");
-  }
+//  @Operation(summary = "申込状況更新", description = "申込状況を更新します。")
+//  @PutMapping("/updateJyoukyou")
+//  public ResponseEntity<String> updateJyoukyou(@RequestBody Jyoukyou jyoukyou) {
+//    service.updateJyoukyou(jyoukyou);
+//    return ResponseEntity.ok("更新処理が成功しました。");
+//  }
 }
