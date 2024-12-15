@@ -25,7 +25,7 @@ public class StudentConverter {
 //  public List<StudentDetail> convertStudentDetails(List<Student> studentList,
 //      List<StudentCourse> studentCourseList) {
   public List<StudentDetail> convertStudentDetails(List<Student> students,
-      List<StudentsCourses> studentsCourses) {
+      List<StudentCourse> studentsCourses) {
 
     List<StudentDetail> studentDetails = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class StudentConverter {
 //      List<StudentCourse> convertStudentCourseList = studentCourseList.stream()
 //         .filter(studentCourse -> student.getId() == studentCourse.getStudentId())
       List<StudentCourse> convertStudentCourseList = studentsCourses.stream()
-          .filter(studentCourse -> student.getId().equals(studentCourse.getStudentid()))
+          .filter(studentCourse -> student.getId()==studentCourse.getStudentId())
 
           .collect(Collectors.toList());
 
