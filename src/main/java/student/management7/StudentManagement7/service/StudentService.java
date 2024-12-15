@@ -33,32 +33,44 @@ public class StudentService {
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
     List<Jyoukyou> jyoukyouList = repository.searchAllJyoukyou();
 
-    Map<Integer, Jyoukyou> jyoukyouMap = jyoukyouList.stream()
-        .collect(Collectors.toMap(Jyoukyou::getCourseId, Function.identity()));
+//    Map<Integer, Jyoukyou> jyoukyouMap = jyoukyouList.stream()
+//        .collect(Collectors.toMap(Jyoukyou::getCourseId, Function.identity()));
 
     List<StudentDetail> studentDetails = studentList.stream().map(student -> {
       List<StudentCourse> courses = studentCourseList.stream()
           .filter(course -> course.getStudentId() == student.getId())
           .collect(Collectors.toList());
 
-      List<Jyoukyou> jyoukyouForStudent = courses.stream()
-          .map(course -> jyoukyouMap.get(course.getId()))
-          .collect(Collectors.toList());
+//      List<Jyoukyou> jyoukyouForStudent = courses.stream()
+//          .map(course -> jyoukyouMap.get(course.getId()))
+//          .collect(Collectors.toList());
 
-      return new StudentDetail(student, courses, jyoukyouForStudent);
+//      return new StudentDetail(student, courses, jyoukyouForStudent);
+//    }).collect(Collectors.toList());
+      return new StudentDetail(student, courses, null);
     }).collect(Collectors.toList());
 
     return studentDetails;
   }
 
+
+  //↓追加
   public StudentDetail searchStudent(int id) {
     Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourse = repository.searchStudentsCourses(id);
-    List<Jyoukyou> jyoukyouList = studentCourse.stream()
-        .map(course -> repository.searchJyoukyouByCourseId(course.getId()))
-        .collect(Collectors.toList());
-    return new StudentDetail(student, studentCourse, jyoukyouList);
+    List<StudentCourse> studentCourses = repository.searchStudentsCourses(id);
+    return new StudentDetail(student, studentCourses, null);
   }
+//↑追加
+
+
+//  public StudentDetail searchStudent(int id) {
+//    Student student = repository.searchStudent(id);
+//    List<StudentCourse> studentCourse = repository.searchStudentsCourses(id);
+//    List<Jyoukyou> jyoukyouList = studentCourse.stream()
+//        .map(course -> repository.searchJyoukyouByCourseId(course.getId()))
+//        .collect(Collectors.toList());
+//    return new StudentDetail(student, studentCourse, jyoukyouList);
+//  }
 
   @Transactional
   public StudentDetail registerStudent(StudentDetail studentDetail) {
@@ -84,14 +96,14 @@ public class StudentService {
     studentDetail.getStudentCourseList().forEach(repository::updateStudentCourse);
   }
 
-  @Transactional
-  public Jyoukyou registerJyoukyou(Jyoukyou jyoukyou) {
-    repository.registerJyoukyou(jyoukyou);
-    return jyoukyou;
-  }
+//  @Transactional
+//  public Jyoukyou registerJyoukyou(Jyoukyou jyoukyou) {
+//    repository.registerJyoukyou(jyoukyou);
+//    return jyoukyou;
+//  }
 
-  @Transactional
-  public void updateJyoukyou(Jyoukyou jyoukyou) {
-    repository.updateJyoukyou(jyoukyou);
-  }
+//  @Transactional
+//  public void updateJyoukyou(Jyoukyou jyoukyou) {
+//    repository.updateJyoukyou(jyoukyou);
+//  }
 }
