@@ -92,7 +92,7 @@ public interface StudentRepository {
      * @param courseId コースID
      * @return 申込状況
      */
-//    Jyoukyou searchJyoukyouByCourseId(int courseId);
+    Jyoukyou searchJyoukyouByCourseId(int courseId);
 
 
     /**

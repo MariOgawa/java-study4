@@ -10,6 +10,7 @@ import student.management7.StudentManagement7.data.Student;
 @MybatisTest
 class StudentRepositoryTest {
 
+
   @Autowired
   private StudentRepository sut;
 

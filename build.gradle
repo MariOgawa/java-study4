@@ -57,16 +57,19 @@ dependencies {
 	//H2(InMemoryDB)
 	testImplementation 'com.h2database:h2:2.2.224'
 
-
 	//javax.validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-
 
 }
 test {
 	include '**/StudentConverterTest.*'
 	include '**/StudentRepositoryTest*'
+}
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "failed", "skipped"
+	}
 }
 
 tasks.named('test') {
