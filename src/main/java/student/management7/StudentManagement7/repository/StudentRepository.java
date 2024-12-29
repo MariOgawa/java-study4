@@ -100,13 +100,13 @@ public interface StudentRepository {
      *
      * @param jyoukyou 申込状況
      */
-//    void registerJyoukyou(Jyoukyou jyoukyou);
+    void registerJyoukyou(Jyoukyou jyoukyou);
 
     /**
      * 申込状況を更新します。
      *
      * @param jyoukyou 申込状況
      */
-//    void updateJyoukyou(Jyoukyou jyoukyou);
+    void updateJyoukyou(Jyoukyou jyoukyou);
 
 }

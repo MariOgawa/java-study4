@@ -1,4 +1,4 @@
-package student.management7.StudentManagement7.Service;
+package student.management7.StudentManagement7.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
