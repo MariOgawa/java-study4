@@ -8,12 +8,12 @@ import lombok.Setter;
 @Schema(description = "申込状況")
 @Getter
 @Setter
-public class Jyoukyou {
+public class Status {
   @Pattern(regexp = "^\\d+$")
   private int id;
   @Pattern(regexp = "^\\d+$")
   private int courseId;
-  private String jyoukyou;
+  private String status;
 
 }
 
