@@ -17,5 +17,13 @@ public class StudentCourse {
   private String courseName;
   private Timestamp courseStartAt;
   private Timestamp courseEndAt;
+
+  public String getCoursename() {
+    return coursename;
+  }
+
+  public void setCoursename(String coursename) {
+    this.coursename = coursename;
+  }
 }
 
