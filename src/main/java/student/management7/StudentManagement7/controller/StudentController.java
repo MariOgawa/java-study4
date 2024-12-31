@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 import student.management7.StudentManagement7.controller.converter.StudentConverter;
-import student.management7.StudentManagement7.data.Jyoukyou;
+import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.exception.TestException;
 import student.management7.StudentManagement7.service.StudentService;
@@ -67,11 +66,26 @@ public class StudentController {
    * @param id 受講生ID
    * @return 受講生情報
    */
-  @Operation(summary = "受講生検索", description = "IDに紐づく任意の受講生の情報を検索します。")
-  @GetMapping("/student/{id}")
-  public StudentDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id){
-    return service.searchStudent(Integer.parseInt(id));
+  //@Operation(summary = "受講生検索", description = "IDに紐づく任意の受講生の情報を検索します。")
+  //@GetMapping("/student/{id}")
+  //public StudentDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id){
+  //  return service.searchStudent(Integer.parseInt(id));
+  //}
+
+  /**
+   * StudentCourseのIDでStatusを検索します。
+   *
+   * @param id StudentCourseのID
+   * @return 紐づくStatus
+   */
+
+  @Operation(summary = "StudentCourse詳細", description = "StudentCourseの詳細情報を取得します")
+  @GetMapping("/studentCourse/{id}")
+  public ResponseEntity<StudentDetail> getStudentCourseDetail(@PathVariable int id) {
+    StudentDetail studentDetail = service.getStudentCourseDetails(id);
+    return ResponseEntity.ok(studentDetail);
   }
+
 
 
 
