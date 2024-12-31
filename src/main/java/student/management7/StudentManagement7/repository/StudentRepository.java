@@ -2,7 +2,7 @@ package student.management7.StudentManagement7.repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import student.management7.StudentManagement7.data.Jyoukyou;
+import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
 
@@ -40,10 +40,16 @@ public interface StudentRepository {
      */
     List<StudentCourse> searchStudentCourseList();
 
+
     /** * 全ての申込状況を検索します。
      * *
      * * @return 申込状況一覧 */
-    List<Jyoukyou> searchAllJyoukyou();
+    List<Status> searchAllStatus();
+
+
+
+        StudentCourse searchStudentCourseById(int id);
+
 
     /**
      * 受講生IDに紐づく受講生コース情報を検索します。
@@ -85,14 +91,22 @@ public interface StudentRepository {
 
 
 
-
     /**
      * 申込状況をコースIDで検索します。
      *
      * @param courseId コースID
      * @return 申込状況
      */
-//    Jyoukyou searchJyoukyouByCourseId(int courseId);
+    Status searchStatusByCourseId(int courseId);
+
+    /**
+     * StudentCourseのIDをキーにしてStatusを検索します。
+     *
+     * @param id StudentCourseのID
+     * @return 紐づくStatus
+     */
+    Status searchStatusByStudentCourseId(int id);
+
 
 
     /**
@@ -108,5 +122,6 @@ public interface StudentRepository {
      * @param jyoukyou 申込状況
      */
 //    void updateJyoukyou(Jyoukyou jyoukyou);
+
 
 }
