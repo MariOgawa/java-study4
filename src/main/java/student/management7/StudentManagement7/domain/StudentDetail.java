@@ -19,8 +19,8 @@ public class StudentDetail {
   private Student student;
   @Valid
   private List<StudentCourse> studentCourseList;
-  @Valid
-  private List<Jyoukyou>jyoukyouList;
+  //@Valid
+  //private List<Jyoukyou>jyoukyouList;
 
 }
 

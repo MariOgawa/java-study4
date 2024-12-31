@@ -60,11 +60,5 @@
     WHERE id =#{id}
   </update>
 
-  <select id="searchAllJyoukyou" resultType="student.management7.StudentManagement7.data.Jyoukyou">
-    SELECT * FROM courses_jyoukyou
-  </select>
 
-  <select id="searchJyoukyouByCourseId" parameterType="int" resultType="student.management7.StudentManagement7.data.Jyoukyou">
-    SELECT * FROM courses_jyoukyou WHERE course_id = #{courseId}
-  </select>
 </mapper>
