@@ -13,7 +13,6 @@ import student.management7.StudentManagement7.controller.converter.StudentConver
 import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
-//import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.repository.StudentRepository;
 
@@ -48,31 +47,10 @@ public class StudentService {
 
       return new StudentDetail(student, courses, StatusForStudent);
     }).collect(Collectors.toList());
-//      return new StudentDetail(student, courses, null);
-//    }).collect(Collectors.toList());
 
     return studentDetails;
   }
 
-
-  //↓追加
-//  public StudentDetail searchStudent(int id) {
-//    Student student = repository.searchStudent(id);
-//    List<StudentCourse> studentCourses = repository.searchStudentsCourses(id);
-//    return new StudentDetail(student, studentCourses, null);
-//  }
-//↑追加
-
-/*
-  public StudentDetail searchStudent(int id) {
-    Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourse = repository.searchStudentsCourses(id);
-    List<Status> StatusList = studentCourse.stream()
-        .map(course -> repository.searchStatusByCourseId(course.getId()))
-        .collect(Collectors.toList());
-    return new StudentDetail(student, studentCourse, StatusList);
-  }
-*/
   /**
    * StudentCourseのIDから紐づくStatusを取得します。
    *
@@ -92,18 +70,6 @@ public class StudentService {
 
     return new StudentDetail(student, List.of(studentCourse), List.of(status));
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   @Transactional
   public StudentDetail registerStudent(StudentDetail studentDetail) {
@@ -128,15 +94,4 @@ public class StudentService {
     repository.updateStudent(studentDetail.getStudent());
     studentDetail.getStudentCourseList().forEach(repository::updateStudentCourse);
   }
-
-  //@Transactional
-  //public Status registerStatus(Status Status) {
-  //  repository.registerStatus(Status);
-  //  return Status;
-  //}
-
-  // @Transactional
-  //public void updateStatus(Status Status) {
-  //  repository.updateStatus(Status);
-  //}
 }

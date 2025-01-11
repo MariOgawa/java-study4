@@ -2,8 +2,6 @@ package student.management7.StudentManagement7.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import student.management7.StudentManagement7.controller.converter.StudentConverter;
-import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.exception.TestException;
 import student.management7.StudentManagement7.service.StudentService;
@@ -61,18 +58,6 @@ public class StudentController {
   }
 
   /**
-   * 受講生検索です。 IDに紐づく任意の受講生の情報を取得します。
-   *
-   * @param id 受講生ID
-   * @return 受講生情報
-   */
-  //@Operation(summary = "受講生検索", description = "IDに紐づく任意の受講生の情報を検索します。")
-  //@GetMapping("/student/{id}")
-  //public StudentDetail getStudent(@PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id){
-  //  return service.searchStudent(Integer.parseInt(id));
-  //}
-
-  /**
    * StudentCourseのIDでStatusを検索します。
    *
    * @param id StudentCourseのID
@@ -85,9 +70,6 @@ public class StudentController {
     StudentDetail studentDetail = service.getStudentCourseDetails(id);
     return ResponseEntity.ok(studentDetail);
   }
-
-
-
 
   /**
    * 受講生詳細の登録を行います。
@@ -120,30 +102,4 @@ public class StudentController {
   public ResponseEntity<String> handleTestException(TestException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
-
-  /**
-   * 申込状況の登録を行います。
-   *
-   * @param jyoukyou 申込状況
-   * @return 実行結果
-   */
-//  @Operation(summary = "申込状況登録", description = "申込状況を登録します。")
-//  @PostMapping("/registerJyoukyou")
-//  public ResponseEntity<Jyoukyou> registerJyoukyou(@RequestBody @Valid Jyoukyou jyoukyou) {
-//    Jyoukyou responseJyoukyou = service.registerJyoukyou(jyoukyou);
-//    return ResponseEntity.ok(responseJyoukyou);
-//  }
-
-  /**
-   * 申込状況の更新を行います。
-   *
-   * @param jyoukyou 申込状況
-   * @return 実行結果
-   */
-//  @Operation(summary = "申込状況更新", description = "申込状況を更新します。")
-//  @PutMapping("/updateJyoukyou")
-//  public ResponseEntity<String> updateJyoukyou(@RequestBody Jyoukyou jyoukyou) {
-//    service.updateJyoukyou(jyoukyou);
-//    return ResponseEntity.ok("更新処理が成功しました。");
-//  }
 }

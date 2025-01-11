@@ -18,6 +18,5 @@ public class StudentCourse {
   private Timestamp courseStartAt;
   private Timestamp courseEndAt;
 
-
 }
 

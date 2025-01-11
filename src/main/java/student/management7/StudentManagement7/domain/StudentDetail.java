@@ -21,12 +21,10 @@ public class StudentDetail {
   @Valid
   private List<Status> statusList;
 
-    public StudentDetail(Student student, List<StudentCourse> studentCourseList, List<Status> statusList) {
-      this.student = student;
-      this.studentCourseList = studentCourseList;
-      this.statusList = statusList;
-    }
-
-
+  public StudentDetail(Student student, List<StudentCourse> studentCourseList, List<Status> statusList) {
+    this.student = student;
+    this.studentCourseList = studentCourseList;
+    this.statusList = statusList;
+  }
 }
 
