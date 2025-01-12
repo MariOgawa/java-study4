@@ -11,12 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("student.management7.StudentManagement7.repository")
 public class StudentManagement7Application{
 
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(StudentManagement7Application.class, args);
 	}
-
-
 }
 

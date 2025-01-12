@@ -95,4 +95,12 @@ public interface StudentRepository {
      * @return 紐づくStatus
      */
     Status searchStatusByStudentCourseId(int id);
+
+    /**
+     * 申込状況（Status）を更新します。
+     *
+     * @param status 更新する申込状況オブジェクト
+     */
+    void updateStatus(Status status);
+
 }

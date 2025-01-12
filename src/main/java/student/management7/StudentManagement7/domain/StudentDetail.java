@@ -12,19 +12,15 @@ import student.management7.StudentManagement7.data.StudentCourse;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class StudentDetail {
   @Valid
   private Student student;
   @Valid
-  private List<StudentCourse> studentCourseList;
-  @Valid
-  private List<Status> statusList;
+  private List<StudentCourseDetail> studentCourseDetailList;
 
-  public StudentDetail(Student student, List<StudentCourse> studentCourseList, List<Status> statusList) {
+  public StudentDetail(Student student, List<StudentCourseDetail> studentCourseDetailList) {
     this.student = student;
-    this.studentCourseList = studentCourseList;
-    this.statusList = statusList;
+    this.studentCourseDetailList = studentCourseDetailList;
   }
 }
 
