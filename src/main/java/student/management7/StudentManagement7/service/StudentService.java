@@ -31,7 +31,7 @@ public class StudentService {
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-      List<Status> StatusList = repository.searchAllStatus();
+    List<Status> StatusList = repository.searchAllStatus();
 
     Map<Integer, Status> StatusMap = StatusList.stream()
         .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
