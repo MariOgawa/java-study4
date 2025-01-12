@@ -43,13 +43,12 @@
     WHERE course_id = (SELECT id FROM students_courses WHERE id = #{id})
   </select>
 
-    <!-- StudentCourseのIDでStudentCourseを取得する -->
-    <select id="searchStudentCourseById" parameterType="int" resultType="student.management7.StudentManagement7.data.StudentCourse">
-      SELECT *
-      FROM students_courses
-      WHERE id = #{id}
-    </select>
-
+  <!-- StudentCourseのIDでStudentCourseを取得する -->
+  <select id="searchStudentCourseById" parameterType="int" resultType="student.management7.StudentManagement7.data.StudentCourse">
+    SELECT *
+    FROM students_courses
+    WHERE id = #{id}
+  </select>
 
   <!-- 受講生コース情報に紐づく受講生コース状況を検索 -->
   <select id="searchStatusByCourseId" resultType="student.management7.StudentManagement7.data.Status">
