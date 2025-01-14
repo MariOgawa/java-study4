@@ -56,18 +56,40 @@ public class StudentService {
     return new StudentDetail(student, List.of(studentCourseDetail));
   }
 
+  //2025.01.19ST
+  public Student getStudent(int id) {
+    return repository.searchStudent(id);
+  }
+  //2025.01.19END
+
+  //2025.02.02STR
   @Transactional
   public StudentDetail registerStudent(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
     repository.registerStudent(student);
+
     studentDetail.getStudentCourseDetailList().forEach(detail -> {
       StudentCourse studentCourse = detail.getStudentCourse();
       initStudentsCourse(studentCourse, student.getId());
       repository.registerStudentCourse(studentCourse);
+
+      // ステータスをチェック
+      Status status = detail.getStatus();
+      if (status == null || status.getStatus() == null || status.getStatus().isEmpty()) {
+        throw new IllegalArgumentException("ステータスが未入力です。'本申込'、'受講中'、'仮申込'、'受講終了' のいずれかを指定してください。");
+      }
+
+      // ステータスを登録
+      status.setCourseId(studentCourse.getId());
+      repository.registerStatus(status);  // ここで呼び出し
+
+      // 登録後のステータスを取得
       detail.setStatus(repository.searchStatusByStudentCourseId(studentCourse.getId()));
     });
+
     return studentDetail;
   }
+  //2025.02.02END
 
   private void initStudentsCourse(StudentCourse studentCourse, int studentId) {
     LocalDateTime now = LocalDateTime.now();
@@ -76,12 +98,21 @@ public class StudentService {
     studentCourse.setCourseEndAt(Timestamp.valueOf(now.plusYears(1)));
   }
 
+  //2025.01.19.ST
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    studentDetail.getStudentCourseDetailList().forEach(detail -> {
+
+    // Nullチェックを追加
+    List<StudentCourseDetail> courseDetails = studentDetail.getStudentCourseDetailList();
+    if (courseDetails == null) {
+      courseDetails = List.of(); // 空のリストに置き換える
+    }
+
+    courseDetails.forEach(detail -> {
       repository.updateStudentCourse(detail.getStudentCourse());
       repository.updateStatus(detail.getStatus());
     });
   }
+  //2025.01.19END
 }

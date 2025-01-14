@@ -31,6 +31,22 @@ public class StudentController {
   public List<StudentDetail> getStudentList() {
     return service.searchStudentList();
   }
+  //2025.01.19ST
+  @GetMapping("/student/{id}")
+  public ResponseEntity<StudentDetail> getStudentDetail(@PathVariable int id) {
+    List<StudentDetail> studentDetails = service.searchStudentList();
+    StudentDetail studentDetail = studentDetails.stream()
+        .filter(detail -> detail.getStudent().getId() == id)
+        .findFirst()
+        .orElse(null);
+
+    if (studentDetail == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(studentDetail);
+  }
+  //2025.01.19END
 
   @Operation(summary = "StudentCourse詳細", description = "StudentCourseの詳細情報を取得します")
   @GetMapping("/studentCourse/{id}")
@@ -48,7 +64,7 @@ public class StudentController {
 
   @Operation(summary = "受講生更新とキャンセル", description = "受講生更新とキャンセルを行います。")
   @PutMapping("/updateStudent")
-  public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
+  public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
