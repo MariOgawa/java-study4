@@ -87,5 +87,13 @@
     WHERE id =#{id}
   </update>
 
+  <!-- 2025.01.25.ST -->
+  <!-- Statusの更新 -->
+  <update id="updateStatus" parameterType="student.management7.StudentManagement7.data.Status">
+    UPDATE courses_status
+    SET status = #{status}
+    WHERE id = #{id}
+  </update>
+  <!-- 2025.01.25.END -->
 
 </mapper>

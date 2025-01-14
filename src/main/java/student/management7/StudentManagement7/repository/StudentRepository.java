@@ -1,6 +1,7 @@
 package student.management7.StudentManagement7.repository;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
@@ -65,6 +66,12 @@ public interface StudentRepository {
      * @param studentCourse 受講生コース情報
      */
     void registerStudentCourse(StudentCourse studentCourse);
+
+    //2025.02.02STR
+    // courses_status にステータスを登録するメソッドを追加
+    @Insert("INSERT INTO courses_status (course_id, status) VALUES (#{courseId}, #{status})")
+    void registerStatus(Status status);
+    //2025.02.02END
 
     /**
      * 受講生を更新します。
