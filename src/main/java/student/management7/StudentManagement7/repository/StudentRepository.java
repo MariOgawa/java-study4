@@ -2,7 +2,7 @@ package student.management7.StudentManagement7.repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import student.management7.StudentManagement7.data.Jyoukyou;
+import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
 
@@ -19,7 +19,6 @@ public interface StudentRepository {
      */
     List<Student> search();
 
-    //追加↓
     /**
      * 受講生の検索を行います。
      *
@@ -27,11 +26,9 @@ public interface StudentRepository {
      * @return 受講生
      */
     Student searchStudent(int id);
-    //追加↑
 
     /** * 受講生コース情報の全件検索を行います。 * * @return 受講生コース情報(全件) */
     List<StudentCourse> searchStudentsCourse();
-
 
     /**
      * 受講生のコース情報の全件検索を行います。
@@ -43,7 +40,8 @@ public interface StudentRepository {
     /** * 全ての申込状況を検索します。
      * *
      * * @return 申込状況一覧 */
-    List<Jyoukyou> searchAllJyoukyou();
+    List<Status> searchAllStatus();
+    StudentCourse searchStudentCourseById(int id);
 
     /**
      * 受講生IDに紐づく受講生コース情報を検索します。
@@ -66,7 +64,6 @@ public interface StudentRepository {
      *
      * @param studentCourse 受講生コース情報
      */
-    //@Options(useGeneratedKeys = true, keyProperty = "id")
     void registerStudentCourse(StudentCourse studentCourse);
 
     /**
@@ -83,30 +80,27 @@ public interface StudentRepository {
      */
     void updateStudentCourse(StudentCourse studentCourse);
 
-
-
-
     /**
      * 申込状況をコースIDで検索します。
      *
      * @param courseId コースID
      * @return 申込状況
      */
-//    Jyoukyou searchJyoukyouByCourseId(int courseId);
-
-
-    /**
-     * 新規申込状況を登録します。
-     *
-     * @param jyoukyou 申込状況
-     */
-//    void registerJyoukyou(Jyoukyou jyoukyou);
+    Status searchStatusByCourseId(int courseId);
 
     /**
-     * 申込状況を更新します。
+     * StudentCourseのIDをキーにしてStatusを検索します。
      *
-     * @param jyoukyou 申込状況
+     * @param id StudentCourseのID
+     * @return 紐づくStatus
      */
-//    void updateJyoukyou(Jyoukyou jyoukyou);
+    Status searchStatusByStudentCourseId(int id);
+
+    /**
+     * 申込状況（Status）を更新します。
+     *
+     * @param status 更新する申込状況オブジェクト
+     */
+    void updateStatus(Status status);
 
 }

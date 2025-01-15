@@ -9,84 +9,69 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import student.management7.StudentManagement7.controller.converter.StudentConverter;
-import student.management7.StudentManagement7.data.Jyoukyou;
+import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
-//import student.management7.StudentManagement7.data.jyoukyou;
 import student.management7.StudentManagement7.domain.StudentDetail;
+import student.management7.StudentManagement7.domain.StudentCourseDetail;
 import student.management7.StudentManagement7.repository.StudentRepository;
 
 @Service
 public class StudentService {
 
-  private StudentRepository repository;
-  private StudentConverter converter;
+  private final StudentRepository repository;
 
   @Autowired
-  public StudentService(StudentRepository repository, StudentConverter converter) {
+  public StudentService(StudentRepository repository) {
     this.repository = repository;
-    this.converter = converter;
   }
 
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-  //  List<Jyoukyou> jyoukyouList = repository.searchAllJyoukyou();
+    List<Status> statusList = repository.searchAllStatus();
 
-//    Map<Integer, Jyoukyou> jyoukyouMap = jyoukyouList.stream()
-//        .collect(Collectors.toMap(Jyoukyou::getCourseId, Function.identity()));
+    Map<Integer, Status> statusMap = statusList.stream()
+        .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
 
     List<StudentDetail> studentDetails = studentList.stream().map(student -> {
-      List<StudentCourse> courses = studentCourseList.stream()
+      List<StudentCourseDetail> courseDetails = studentCourseList.stream()
           .filter(course -> course.getStudentId() == student.getId())
+          .map(course -> new StudentCourseDetail(course, statusMap.get(course.getId())))
           .collect(Collectors.toList());
 
-//      List<Jyoukyou> jyoukyouForStudent = courses.stream()
-//          .map(course -> jyoukyouMap.get(course.getId()))
-//          .collect(Collectors.toList());
-
-//      return new StudentDetail(student, courses, jyoukyouForStudent);
-//    }).collect(Collectors.toList());
-      return new StudentDetail(student, courses);
+      return new StudentDetail(student, courseDetails);
     }).collect(Collectors.toList());
 
     return studentDetails;
   }
 
+  public StudentDetail getStudentCourseDetails(int studentCourseId) {
+    StudentCourse studentCourse = repository.searchStudentCourseById(studentCourseId);
+    Student student = repository.searchStudent(studentCourse.getStudentId());
+    Status status = repository.searchStatusByStudentCourseId(studentCourseId);
 
-  //↓追加
-  public StudentDetail searchStudent(int id) {
-    Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourses = repository.searchStudentsCourses(id);
-    return new StudentDetail(student, studentCourses);
+    StudentCourseDetail studentCourseDetail = new StudentCourseDetail(studentCourse, status);
+
+    return new StudentDetail(student, List.of(studentCourseDetail));
   }
-//↑追加
-
-
-//  public StudentDetail searchStudent(int id) {
-//    Student student = repository.searchStudent(id);
-//    List<StudentCourse> studentCourse = repository.searchStudentsCourses(id);
-//    List<Jyoukyou> jyoukyouList = studentCourse.stream()
-//        .map(course -> repository.searchJyoukyouByCourseId(course.getId()))
-//        .collect(Collectors.toList());
-//    return new StudentDetail(student, studentCourse, jyoukyouList);
-//  }
 
   @Transactional
   public StudentDetail registerStudent(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
     repository.registerStudent(student);
-    studentDetail.getStudentCourseList().forEach(studentCourse -> {
+    studentDetail.getStudentCourseDetailList().forEach(detail -> {
+      StudentCourse studentCourse = detail.getStudentCourse();
       initStudentsCourse(studentCourse, student.getId());
       repository.registerStudentCourse(studentCourse);
+      detail.setStatus(repository.searchStatusByStudentCourseId(studentCourse.getId()));
     });
     return studentDetail;
   }
 
-  private void initStudentsCourse(StudentCourse studentCourse, int id) {
+  private void initStudentsCourse(StudentCourse studentCourse, int studentId) {
     LocalDateTime now = LocalDateTime.now();
-    studentCourse.setStudentId(id);
+    studentCourse.setStudentId(studentId);
     studentCourse.setCourseStartAt(Timestamp.valueOf(now));
     studentCourse.setCourseEndAt(Timestamp.valueOf(now.plusYears(1)));
   }
@@ -94,17 +79,9 @@ public class StudentService {
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    studentDetail.getStudentCourseList().forEach(repository::updateStudentCourse);
+    studentDetail.getStudentCourseDetailList().forEach(detail -> {
+      repository.updateStudentCourse(detail.getStudentCourse());
+      repository.updateStatus(detail.getStatus());
+    });
   }
-
-  //@Transactional
-  //public Jyoukyou registerJyoukyou(Jyoukyou jyoukyou) {
-  //  repository.registerJyoukyou(jyoukyou);
-  //  return jyoukyou;
-  //}
-
- // @Transactional
-  //public void updateJyoukyou(Jyoukyou jyoukyou) {
-  //  repository.updateJyoukyou(jyoukyou);
-  //}
 }

@@ -23,11 +23,38 @@
     FROM students_courses
   </select>
 
+  <!-- 受講生のコース状況の全件検索 -->
+  <select id="searchAllStatus" resultType="student.management7.StudentManagement7.data.Status">
+    SELECT *
+    FROM courses_status
+  </select>
+
   <!-- 受講生IDに紐づく受講生コース情報を検索 -->
   <select id="searchStudentsCourses" resultType="student.management7.StudentManagement7.data.StudentCourse">
     SELECT *
     FROM students_courses
     WHERE student_id = #{studentId}
+  </select>
+
+  <!-- StudentCourseのidでStatusを検索 -->
+  <select id="searchStatusByStudentCourseId" resultType="student.management7.StudentManagement7.data.Status">
+    SELECT *
+    FROM courses_status
+    WHERE course_id = (SELECT id FROM students_courses WHERE id = #{id})
+  </select>
+
+  <!-- StudentCourseのIDでStudentCourseを取得する -->
+  <select id="searchStudentCourseById" parameterType="int" resultType="student.management7.StudentManagement7.data.StudentCourse">
+    SELECT *
+    FROM students_courses
+    WHERE id = #{id}
+  </select>
+
+  <!-- 受講生コース情報に紐づく受講生コース状況を検索 -->
+  <select id="searchStatusByCourseId" resultType="student.management7.StudentManagement7.data.Status">
+    SELECT *
+    FROM courses_status
+    WHERE course_id = #{courseId}
   </select>
 
   <!-- 受講生を新規登録 -->
