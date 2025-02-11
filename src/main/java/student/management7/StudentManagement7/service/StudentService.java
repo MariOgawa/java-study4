@@ -29,7 +29,14 @@ public class StudentService {
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-    List<Status> statusList = repository.searchAllStatus();
+
+    //2025.02.15ST
+    //まとめてステータスを取得する
+    List<Integer> courseIds = studentCourseList.stream()
+        .map(StudentCourse::getId)
+        .collect(Collectors.toList());
+    List<Status> statusList = repository.findStatusesByCourseIds(courseIds);
+    //2025.02.15END
 
     Map<Integer, Status> statusMap = statusList.stream()
         .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
@@ -82,10 +89,21 @@ public class StudentService {
       // ステータスを登録
       status.setCourseId(studentCourse.getId());
       repository.registerStatus(status);  // ここで呼び出し
-
-      // 登録後のステータスを取得
-      detail.setStatus(repository.searchStatusByStudentCourseId(studentCourse.getId()));
     });
+
+    //2025.02.15ST
+    // 登録後の全てのステータスを一括取得
+    List<Integer> courseIds = studentDetail.getStudentCourseDetailList().stream()
+        .map(detail -> detail.getStudentCourse().getId())
+        .collect(Collectors.toList());
+    List<Status> updatedStatuses = repository.findStatusesByCourseIds(courseIds);
+    Map<Integer, Status> statusMap = updatedStatuses.stream()
+        .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
+
+    studentDetail.getStudentCourseDetailList().forEach(detail ->
+        detail.setStatus(statusMap.get(detail.getStudentCourse().getId()))
+    );
+    //2025.02.15END
 
     return studentDetail;
   }
@@ -109,10 +127,45 @@ public class StudentService {
       courseDetails = List.of(); // 空のリストに置き換える
     }
 
+    //2025.02.15ST
+    List<Integer> courseIds = courseDetails.stream()
+        .map(detail -> detail.getStudentCourse().getId())
+        .collect(Collectors.toList());
+    List<Status> statusList = repository.findStatusesByCourseIds(courseIds);
+    Map<Integer, Status> currentStatusMap = statusList.stream()
+        .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
+    //2025.02.15END
+
+    // ステータスの進行可能な順序を定義
+    List<String> validStatusOrder = List.of("仮申込", "本申込", "受講中", "受講終了");
+
     courseDetails.forEach(detail -> {
+
+      //2025.02.15ST
+      // 現在のステータスを取得
+      Status currentStatus = currentStatusMap.get(detail.getStudentCourse().getId());
+      //2025.02.15END
+      Status newStatus = detail.getStatus();
+
+      // ステータスが null または不正な場合はエラー
+      if (newStatus == null || newStatus.getStatus() == null || newStatus.getStatus().isEmpty()) {
+        throw new IllegalArgumentException("ステータスが未入力です。'本申込'、'受講中'、'仮申込'、'受講終了' のいずれかを指定してください。");
+      }
+
+      // 現在のステータスと新しいステータスの位置を取得
+      int currentIndex = validStatusOrder.indexOf(currentStatus.getStatus());
+      int newIndex = validStatusOrder.indexOf(newStatus.getStatus());
+
+      // 新しいステータスが現在のステータスより前の状態に戻る場合はエラー
+      if (newIndex < currentIndex) {
+        throw new IllegalArgumentException("ステータスを前の段階に戻すことはできません。現在のステータス: "
+            + currentStatus.getStatus() + " → 新しいステータス: " + newStatus.getStatus());
+      }
+
       repository.updateStudentCourse(detail.getStudentCourse());
-      repository.updateStatus(detail.getStatus());
+      repository.updateStatus(newStatus);
     });
   }
-  //2025.01.19END
+//2025.01.19END
+
 }

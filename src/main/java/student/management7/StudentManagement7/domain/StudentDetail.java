@@ -11,7 +11,6 @@ import student.management7.StudentManagement7.data.StudentCourse;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class StudentDetail {
   @Valid
   private Student student;

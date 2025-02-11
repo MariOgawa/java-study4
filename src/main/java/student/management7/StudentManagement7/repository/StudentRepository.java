@@ -3,6 +3,8 @@ package student.management7.StudentManagement7.repository;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
@@ -51,6 +53,23 @@ public interface StudentRepository {
      * @return 受講生IDに紐づく受講生コース情報
      */
     List<StudentCourse> searchStudentsCourses(int studentId);
+
+    /**
+     * 複数のcourseIdに対して一括でStatusを取得するため、IN句を使ったメソッドを追加します。
+     *
+     * @param courseIds 受講生コースID
+     * @return 複数のcourseIdに紐づくStatus情報
+     */
+    @Select({
+        "<script>",
+        "SELECT * FROM courses_status",
+        "WHERE course_id IN",
+        "<foreach item='id' collection='courseIds' open='(' separator=',' close=')'>",
+        "#{id}",
+        "</foreach>",
+        "</script>"
+    })
+    List<Status> findStatusesByCourseIds(@Param("courseIds") List<Integer> courseIds);
 
     /**
      * 受講生を新規登録します。IDに関しては自動採番を行う。

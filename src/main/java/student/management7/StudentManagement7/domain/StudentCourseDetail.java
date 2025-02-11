@@ -9,7 +9,6 @@ import student.management7.StudentManagement7.data.StudentCourse;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class StudentCourseDetail {
   @Valid
   private StudentCourse studentCourse;
