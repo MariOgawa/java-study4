@@ -109,10 +109,33 @@ public class StudentService {
       courseDetails = List.of(); // 空のリストに置き換える
     }
 
+    // ステータスの進行可能な順序を定義
+    List<String> validStatusOrder = List.of("仮申込", "本申込", "受講中", "受講終了");
+
     courseDetails.forEach(detail -> {
+      // 現在のステータスを取得
+      Status currentStatus = repository.searchStatusByStudentCourseId(detail.getStudentCourse().getId());
+      Status newStatus = detail.getStatus();
+
+      // ステータスが null または不正な場合はエラー
+      if (newStatus == null || newStatus.getStatus() == null || newStatus.getStatus().isEmpty()) {
+        throw new IllegalArgumentException("ステータスが未入力です。'本申込'、'受講中'、'仮申込'、'受講終了' のいずれかを指定してください。");
+      }
+
+      // 現在のステータスと新しいステータスの位置を取得
+      int currentIndex = validStatusOrder.indexOf(currentStatus.getStatus());
+      int newIndex = validStatusOrder.indexOf(newStatus.getStatus());
+
+      // 新しいステータスが現在のステータスより前の状態に戻る場合はエラー
+      if (newIndex < currentIndex) {
+        throw new IllegalArgumentException("ステータスを前の段階に戻すことはできません。現在のステータス: "
+            + currentStatus.getStatus() + " → 新しいステータス: " + newStatus.getStatus());
+      }
+
       repository.updateStudentCourse(detail.getStudentCourse());
-      repository.updateStatus(detail.getStatus());
+      repository.updateStatus(newStatus);
     });
   }
-  //2025.01.19END
+//2025.01.19END
+
 }
