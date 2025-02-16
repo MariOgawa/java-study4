@@ -1,7 +1,10 @@
 package student.management7.StudentManagement7.repository;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
@@ -52,6 +55,23 @@ public interface StudentRepository {
     List<StudentCourse> searchStudentsCourses(int studentId);
 
     /**
+     * 複数のcourseIdに対して一括でStatusを取得するため、IN句を使ったメソッドを追加します。
+     *
+     * @param courseIds 受講生コースID
+     * @return 複数のcourseIdに紐づくStatus情報
+     */
+    @Select({
+        "<script>",
+        "SELECT * FROM courses_status",
+        "WHERE course_id IN",
+        "<foreach item='id' collection='courseIds' open='(' separator=',' close=')'>",
+        "#{id}",
+        "</foreach>",
+        "</script>"
+    })
+    List<Status> findStatusesByCourseIds(@Param("courseIds") List<Integer> courseIds);
+
+    /**
      * 受講生を新規登録します。IDに関しては自動採番を行う。
      *
      * @param student 受講生
@@ -65,6 +85,12 @@ public interface StudentRepository {
      * @param studentCourse 受講生コース情報
      */
     void registerStudentCourse(StudentCourse studentCourse);
+
+    //2025.02.02STR
+    // courses_status にステータスを登録するメソッドを追加
+    @Insert("INSERT INTO courses_status (course_id, status) VALUES (#{courseId}, #{status})")
+    void registerStatus(Status status);
+    //2025.02.02END
 
     /**
      * 受講生を更新します。

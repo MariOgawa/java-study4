@@ -11,12 +11,11 @@ import student.management7.StudentManagement7.data.StudentCourse;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class StudentDetail {
   @Valid
   private Student student;
   @Valid
-  private List<StudentCourseDetail> studentCourseDetailList;
+  private List<StudentCourseDetail> studentCourseDetailList = List.of(); // 初期化;
 
   public StudentDetail(Student student, List<StudentCourseDetail> studentCourseDetailList) {
     this.student = student;
