@@ -57,9 +57,9 @@ public class StudentService {
   }
 
   //2025.01.19ST
-  public Student getStudent(int id) {
-    return repository.searchStudent(id);
-  }
+ //public Student getStudent(int id) {
+    //return repository.searchStudent(id);
+  //}
   //2025.01.19END
 
   //2025.02.02STR
@@ -100,7 +100,8 @@ public class StudentService {
 
   //2025.01.19.ST
   @Transactional
-  public void updateStudent(StudentDetail studentDetail) {
+  //public void updateStudent(StudentDetail studentDetail) {
+  public StudentDetail updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
 
     // Nullチェックを追加
@@ -113,6 +114,27 @@ public class StudentService {
       repository.updateStudentCourse(detail.getStudentCourse());
       repository.updateStatus(detail.getStatus());
     });
+    return studentDetail; // StudentDetail を返していることを確認
   }
   //2025.01.19END
+
+  public StudentDetail getStudentDetailById(int id) {
+    Student student = repository.searchStudent(id);
+    if (student == null) {
+      return null;
+    }
+
+    List<StudentCourse> studentCourseList = repository.searchStudentCourseListByStudentId(id);
+    List<Status> statusList = repository.searchAllStatus();
+
+    Map<Integer, Status> statusMap = statusList.stream()
+        .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
+
+    List<StudentCourseDetail> courseDetails = studentCourseList.stream()
+        .map(course -> new StudentCourseDetail(course, statusMap.get(course.getId())))
+        .collect(Collectors.toList());
+
+    return new StudentDetail(student, courseDetails);
+  }
+
 }

@@ -3,8 +3,13 @@ package student.management7.StudentManagement7.repository;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
@@ -13,8 +18,9 @@ import student.management7.StudentManagement7.data.StudentCourse;
  * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
  */
 @Mapper
+@Repository
 public interface StudentRepository {
-
+            
     /**
      * 受講生の全件検索を行います。
      *
@@ -76,7 +82,7 @@ public interface StudentRepository {
      *
      * @param student 受講生
      */
-    //@Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     void registerStudent(Student student);
 
     /**
@@ -128,5 +134,13 @@ public interface StudentRepository {
      * @param status 更新する申込状況オブジェクト
      */
     void updateStatus(Status status);
+
+    /**
+     * 受講生IDに基づいて受講生コース情報のリストを取得
+     *
+     * @param studentId 受講生ID
+     * @return 受講生IDに紐づく受講生コース情報のリスト
+     */
+    List<StudentCourse> searchStudentCourseListByStudentId(int studentId);
 
 }
