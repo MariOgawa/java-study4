@@ -60,15 +60,20 @@ dependencies {
 	//javax.validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+
 }
 test {
 	include '**/StudentConverterTest.*'
 	include '**/StudentRepositoryTest*'
+	include '**/StudentControllerTest*'
+	include '**/StudentServiceTest*'
 }
 test {
 	useJUnitPlatform()
 	testLogging {
 		events "passed", "failed", "skipped"
+		showStandardStreams = true
 	}
 }
 

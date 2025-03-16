@@ -24,6 +24,7 @@ public class StudentController {
 
   /** 受講生サービス */
   private final StudentService service;
+  private Process log;
 
   /**
    * コンストラクタ
