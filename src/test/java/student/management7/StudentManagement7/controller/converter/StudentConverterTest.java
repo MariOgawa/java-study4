@@ -6,8 +6,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import student.management7.StudentManagement7.data.Status;
 import student.management7.StudentManagement7.data.Student;
 import student.management7.StudentManagement7.data.StudentCourse;
+import student.management7.StudentManagement7.domain.StudentCourseDetail;
 import student.management7.StudentManagement7.domain.StudentDetail;
 
 class StudentConverterTest {
@@ -47,10 +49,24 @@ class StudentConverterTest {
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
 
-    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList);
+    //2025.02.16ST
+    // Statusリストを用意
+    Status status = new Status();
+    status.setCourseId(1);
+    status.setStatus("Active");
+    List<Status> statusList = List.of(status);
+
+    // 正しい引数リストでメソッドを呼び出す
+    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList, statusList);
+    //2025.02.16END
+
+    // studentCourseDetailListの作成
+    StudentCourseDetail studentCourseDetail = new StudentCourseDetail(studentCourse, status);
+    List<StudentCourseDetail> studentCourseDetailList = List.of(studentCourseDetail);
 
     assertThat(actual.get(0).getStudent()).isEqualTo(student);
-    assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentCourseList);
-
+    //2025.02.16ST
+    assertThat(actual.get(0).getStudentCourseDetailList()).isEqualTo(studentCourseDetailList);
+    //2025.02.16END
   }
 }

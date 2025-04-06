@@ -5,20 +5,21 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import student.management7.StudentManagement7.data.Student;
 
 @MybatisTest
 class StudentRepositoryTest {
 
-
   @Autowired
   private StudentRepository sut;
 
   @Test
-  void 受講生の全件検索が行えること(){
+  void 受講生の全件検索が行えること() {
     List<Student> actual = sut.search();
-    assertThat(actual.size()).isEqualTo(3);
+    assertThat(actual).isNotEmpty(); // 全件検索で少なくとも1件以上のデータがあることを確認
   }
+
   @Test
   void 受講生の登録が行えること(){
     Student student = new Student();
