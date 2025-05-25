@@ -3,6 +3,7 @@ package student.management7.StudentManagement7.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import student.management7.StudentManagement7.domain.StudentDetail;
 import student.management7.StudentManagement7.service.StudentService;
 
+
 /**
  * 受講生の検索や登録、更新などを行うREST APIとして受け付けるControllerです。
  */
@@ -24,6 +26,9 @@ public class StudentController {
 
   /** 受講生サービス */
   private final StudentService service;
+  //@Mock
+  //private StudentService service;
+
   private Process log;
 
   /**
@@ -104,6 +109,9 @@ public class StudentController {
   @Operation(summary = "受講生更新とキャンセル", description = "受講生更新とキャンセルを行います。")
   @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
+    // 受信したStudentDetailオブジェクトを出力
+    //System.out.println("Received StudentDetail: " + studentDetail);
+
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
