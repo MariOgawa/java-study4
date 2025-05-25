@@ -31,8 +31,16 @@ public class StudentService {
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
     List<Status> statusList = repository.searchAllStatus();
 
+    //2025.05.18ST
+    //Map<Integer, Status> statusMap = statusList.stream()
+    //    .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
     Map<Integer, Status> statusMap = statusList.stream()
-        .collect(Collectors.toMap(Status::getCourseId, Function.identity()));
+        .collect(Collectors.toMap(
+            Status::getCourseId,
+            Function.identity(),
+            (existing, replacement) -> {return existing;}  // または replacement にしてもよい
+        ));
+    //2025.05.18END
 
     List<StudentDetail> studentDetails = studentList.stream().map(student -> {
       List<StudentCourseDetail> courseDetails = studentCourseList.stream()
