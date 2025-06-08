@@ -30,7 +30,7 @@ public class StudentController {
    * コンストラクタ
    *
    * @param service 受講生サービス
-   */
+   */  
   @Autowired
   public StudentController(StudentService service) {
     this.service = service;
@@ -40,7 +40,7 @@ public class StudentController {
    * 受講生一覧検索です。 全件検索を行うので、条件指定は行いません。
    *
    * @return 受講生一覧(全件)
-   */
+   */  
   @Operation(summary = "一覧検索", description = "受講生の一覧を検索します。")
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
@@ -87,7 +87,7 @@ public class StudentController {
    *
    * @param studentDetail 受講生詳細
    * @return 実行結果
-   */
+   */  
   @Operation(summary = "受講生登録", description = "受講生を登録します。")
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
@@ -100,7 +100,7 @@ public class StudentController {
    *
    * @param studentDetail 受講生詳細
    * @return 実行結果
-   */
+   */  
   @Operation(summary = "受講生更新とキャンセル", description = "受講生更新とキャンセルを行います。")
   @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {

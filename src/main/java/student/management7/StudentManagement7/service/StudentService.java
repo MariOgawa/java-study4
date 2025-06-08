@@ -38,7 +38,11 @@ public class StudentService {
         .collect(Collectors.toMap(
             Status::getCourseId,
             Function.identity(),
+
             (existing, replacement) -> {return existing;}  // または replacement にしてもよい
+
+
+
         ));
     //2025.05.18END
 
